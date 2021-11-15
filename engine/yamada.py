@@ -7,7 +7,6 @@ from selenium.webdriver.common.keys import Keys
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
 import random
-from common.csv import *
 from common.logger import set_logger
 import pandas as pd
 import re

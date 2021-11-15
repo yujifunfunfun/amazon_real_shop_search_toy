@@ -7,7 +7,7 @@ logger = set_logger(__name__)
 from sp_api.api import ProductFees
 from sp_api.base.marketplaces import Marketplaces
 from common.config import *
-from common.csv import *
+from common.operation_csv import *
 from time import sleep
 
 
@@ -21,6 +21,7 @@ credentials=dict(
     )
 
 def cal_fba_fee(price,asin):
+    print(asin)
     try:
         fees_data = ProductFees(Marketplaces.JP,credentials=credentials).get_product_fees_estimate_for_asin(asin=asin,price=price,currency='JPY',is_fba=True)
         fba_fee = fees_data.payload.get('FeesEstimateResult').get('FeesEstimate').get('TotalFeesEstimate').get('Amount')
@@ -29,25 +30,25 @@ def cal_fba_fee(price,asin):
         fba_fee = 999999
     return fba_fee
 
-def fetch_amaozn_price_url():
-    buybox_asin_list = load_buybox_asin()
-    amazon_price_url_list = []
-    for buybox_asin in buybox_asin_list:
+def fetch_amazon_price_url():
+    buybox_asin_name_list = load_buybox_asin_name()
+    amazon_price_url_name_list = []
+    for buybox_asin_name in buybox_asin_name_list:
         try:
-            buybox = buybox_asin[0]
-            asin = buybox_asin[1]            
+            buybox = buybox_asin_name[0]
+            asin = buybox_asin_name[1]            
             url = f'https://www.amazon.co.jp/gp/product/{asin}'
             fba_fee = cal_fba_fee(buybox,asin)
             sleep(1)
             amazon_price = int(buybox) - int(fba_fee)
         except Exception as e:
             amazon_price = 0
-            url = 'NOne'
+            url = 'None'
         
-        amazon_price_url_list.append([amazon_price,url])
+        amazon_price_url_name_list.append([amazon_price,url,buybox_asin_name[2]])
         
-    return amazon_price_url_list
+    return amazon_price_url_name_list
 
 
 if __name__ == "__main__":
-    fetch_amaozn_price_url()
+    fetch_amazon_price_url()

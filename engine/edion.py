@@ -7,7 +7,6 @@ from selenium.webdriver.common.keys import Keys
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
 import random
-from common.csv import *
 from common.logger import set_logger
 import pandas as pd
 import re
@@ -39,18 +38,18 @@ def start_chrome():
     global driver
     driver = webdriver.Chrome(ChromeDriverManager().install(),options=option)   
 
-def fetch_edion_data(driver,model_number_list):
+def fetch_edion_data(driver,jan_list):
     wait = WebDriverWait(driver, 20)
     driver.get('https://www.edion.com/index.html?_rt=8ViuLsibTqRrxJUXf66gbngY9Y0mKRafyrLqM6Mo7c')
     element = wait.until(EC.presence_of_all_elements_located)
     edion_item_data = []
-    for model_number in model_number_list:
-        print(model_number)
+    for jan in jan_list:
+        print(jan)
         # 商品ページへ遷移
-        if model_number != 'None':
+        if jan != 'None':
             try:
                 driver.find_element_by_id('searchtext').clear()
-                driver.find_element_by_id('searchtext').send_keys(model_number)
+                driver.find_element_by_id('searchtext').send_keys(jan)
                 driver.find_element_by_class_name('hd_submit').click()
                 element = wait.until(EC.presence_of_all_elements_located)
                 name =driver.find_element_by_class_name('item').text
