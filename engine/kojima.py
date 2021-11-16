@@ -38,18 +38,18 @@ def start_chrome():
     global driver
     driver = webdriver.Chrome(ChromeDriverManager().install(),options=option)   
 
-def fetch_kojima_data(driver,model_number_list):
+def fetch_kojima_data(driver,jan_list):
     wait = WebDriverWait(driver, 20)
     driver.get('https://www.kojima.net/ec/index.html')
     element = wait.until(EC.presence_of_all_elements_located)
     kojima_item_data = []
-    for model_number in model_number_list:
-        print(model_number)
+    for jan in jan_list:
+        print(jan)
         # 商品ページへ遷移
-        if model_number != 'None':
+        if jan != 'None':
             try:
                 driver.find_element_by_id('MK2PFRDH010_01_keyword').clear()
-                driver.find_element_by_id('MK2PFRDH010_01_keyword').send_keys(model_number)
+                driver.find_element_by_id('MK2PFRDH010_01_keyword').send_keys(jan)
                 driver.find_element_by_class_name('submit').click()
                 element = wait.until(EC.presence_of_all_elements_located)
                 name =driver.find_element_by_xpath('//*[@id="fwCms_wrapper"]/div/div/div[2]/div[2]/div[1]/div/ul/li[1]/p[1]/a/span').text

@@ -38,18 +38,18 @@ def start_chrome():
     global driver
     driver = webdriver.Chrome(ChromeDriverManager().install(),options=option)   
 
-def fetch_nojima_data(driver,model_number_list):
+def fetch_nojima_data(driver,jan_list):
     wait = WebDriverWait(driver, 20)
     driver.get('https://online.nojima.co.jp/')
     element = wait.until(EC.presence_of_all_elements_located)
     nojima_item_data = []
-    for model_number in model_number_list:
-        print(model_number)
+    for jan in jan_list:
+        print(jan)
         # 商品ページへ遷移
-        if model_number != 'None':
+        if jan != 'None':
             try:
                 driver.find_element_by_id('txtKeywd').clear()
-                driver.find_element_by_id('txtKeywd').send_keys(model_number)
+                driver.find_element_by_id('txtKeywd').send_keys(jan)
                 driver.find_element_by_class_name('nav-search-submit03').click()
                 element = wait.until(EC.presence_of_all_elements_located)
                 name = driver.find_element_by_class_name('textOverflowShohinmei').text
